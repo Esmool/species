@@ -5,7 +5,7 @@ This is a set of programs to simulate & to analysis the pedigree of an agamogene
 
 The primary goal of these programs is to investigate the pedigree of single individuals and their descendant, to reform the diagraph of evolution in micro view port.
 
-All program are standalone, need to run under Node.js.
+All program are standalone, need to run under Python 2/3.
 
 # Usage
 
@@ -14,11 +14,11 @@ First, open the DOS prompt of windows, or loggin to the terminal of linux. Chang
 	cd SPECIES_DIR
 ```
 
-## simluate.js
+## simluate.py
 
 To create simulate result, run command
 ```
-	node simulate.js GENERATIONS POPULATION BIRTH_CONTROL
+	python simulate.py GENERATIONS POPULATION BIRTH_CONTROL
 ```
 
 The parameters above are
@@ -28,7 +28,7 @@ The parameters above are
 
 The simulated pedigree will output to standard output device. If need to store it into some file, use command with STD redirect like this
 ```
-	node simulate GENERATIONS POPULATION BIRTH_CONTROL > FILE_TO_STORE
+	python simulate.py GENERATIONS POPULATION BIRTH_CONTROL > FILE_TO_STORE
 ```
 
 The pedigree output reads like this (simluated using parameters 3 5 3)
@@ -55,7 +55,7 @@ digraph G {
 ```
 Here the number append to each individual indicates its generation. The arrow indicates the individual's parent.
 
-## analysis.js
+## analysis.py
 
 // TODO
 
