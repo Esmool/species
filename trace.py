@@ -1,36 +1,26 @@
 import sys
+import numpy as np
 
-def trace(lines):
-	generations = []
-	firstGeneration = [ record(0, x, None) for x in lines[0] ]
-	n = len(lines)
-	for i in range(0, n-1):
-		generations.append(makeGeneration(i+1, generations[i], lines[i+1]))
-	return generations
-
-def makeGeneration(gId, pGeneration, sLine):
-	list = []
-	codes = sLine.split(' ')
-	for code in sLine:
-		pCode = code[1]
-		# TODO:
-
-def record(gId, individual, parent):
-	return {
-		'generation': gId,
-		'individual': individual,
-		'parent': parent,
-		'descendantLives': 0,
-		'children': []
-	}
+def calc(species):
+	m = len(species)
+	n = len(species[0])
+	gens = np.ones((m, n))
+	for i in range(m-1, 0, -1):
+		me = species[i]
+		parent = None if i == 0 else species[i-1]
+		for j in range(0, n):
+			
 
 def main(argv):
-	lines = []
+	species = []
 	while True:
 		raw = raw_input()
 		if raw == '': break
-		lines.append(raw)
-	trace(lines)
+		individuals = split(raw, ' ')
+		species.append(individuals)
+	gens = calc(species)
+	hist = analysis(gens)
+	print(hist)
 
 if __name__ == '__main__':
 	main(sys.argv[1:])
