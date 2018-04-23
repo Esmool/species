@@ -1,5 +1,6 @@
 import random
 import sys
+import os
 
 CUT = 0.5
 
@@ -46,13 +47,18 @@ def evolute(generation, limit, maxChildren):
 
 	return nextGeneration
 
+def output(species, fname):
+	fpath = os.path.abspath(fname)
+	with open(fpath, 'w') as f:
+		f.write('\r\n'.join(map(lambda x: ' '.join(x), species)))
+
 def main(argv):
-	n = int(argv[0] if len(argv) > 1 else 100)
-	limit = int(argv[1] if len(argv) > 2 else 20)
-	maxChildren = int(argv[2] if len(argv) > 3 else 3)
+	n = int(argv[0] if len(argv) > 0 else 100)
+	limit = int(argv[1] if len(argv) > 1 else 20)
+	maxChildren = int(argv[2] if len(argv) > 2 else 3)
+	fname = argv[3] if len(argv) > 3 else 'species.data'
 	species = simulate(n, limit, maxChildren)
-	text = '\r\n'.join(map(lambda x: ' '.join(x), species))
-	print(text)
+	output(species, fname)
 
 if __name__ == '__main__':
 	main(sys.argv[1:])

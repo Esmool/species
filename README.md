@@ -18,18 +18,14 @@ First, open the DOS prompt of windows, or loggin to the terminal of linux. Chang
 
 To create simulate result, run command
 ```
-	python simulate.py GENERATIONS POPULATION BIRTH_CONTROL
+	python simulate.py GENERATIONS POPULATION BIRTH_CONTROL OUTPUT_PATH
 ```
 
 The parameters above are
 * __GENERATION__	the total generations to simulate
 * __POPULATION__	population of each generation, better not larger then 26, as each individual of the species is denoted by one latin character.
 * __BIRTH_CONTROL__ max children of each individual could have
-
-The simulated pedigree will output to standard output device. If need to store it into some file, use command with STD redirect like this
-```
-	python simulate.py GENERATIONS POPULATION BIRTH_CONTROL > FILE_TO_STORE
-```
+* __OUTPUT_PATH__	output file path relative to current path
 
 The pedigree output reads like this (simluated using parameters 3 5 3)
 ```
@@ -55,9 +51,29 @@ digraph G {
 ```
 Here the number append to each individual indicates its generation. The arrow indicates the individual's parent.
 
-## analysis.py
+## trace.py
 
-// TODO
+To analysis the pedigree of simulated results, use trace.py by command
+```
+	python trace INPUT_DATA_FILE HIST_OUTPUT_FILEPATH GENERATION_COUNT_OUTPUT_FILEPATH
+```
+
+The parameters above are
+* __INPUT_DATA_FILE__	the file simulate.py created
+* __HIST_OUTPUT_FILE__	output file path relative to current path, which will store the histogram of generation counts of each individual that last
+* __GENERATION_COUNT_OUTPUT_FILE__	output file path relative to current path, which will store the genartion counts of ech individual that last
+
+The output of histogram has several lines of data, each line has two numbers. The first number is the generations of descendant that lives, and the second number is how many individuals have such descendant lives.
+
+The output of generation counts has the same matrix structure as output of simulate.py. Each line is one generation, and each number in line indicate on individual, the number itself is the max generation of descendant lives of curresponding individual of the INPUT_DATA_FILE.
+
+## build.bat
+
+Use build.bat you can batchly simulate a series of different parameters, see detail in it, you will know how to use it. It can only run in windows.
+
+## clean.bat
+
+Use clean.bat you can delete all the output data files that build.bat created. Also used only in windows.
 
 # Model Hypothesis
 
