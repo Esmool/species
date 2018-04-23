@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Viewer of pedigree - ${PARAMS}</title>
+		<title>Viewer of pedigree - @{PARAMS}</title>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<meta name="renderer" content="webkit" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 		<script type="text/javascript">
-			let data = ${DATA};
+			let data = @{DATA};
 
 			function reform() {
 				let getParentIndex = name => name.length == 1 ? null : name[0].charCodeAt() - 65;
@@ -209,7 +209,7 @@
 		</style>
 	</head>
 	<body oncontextmenu="self.event.returnValue=false">
-		<h1>Viewer of pedigree - ${PARAMS}</h1>
+		<h1>Viewer of pedigree - @{PARAMS}</h1>
 
 		<h2>Read the diagram</h2>
 		<p>All the blocks are individuals that ever lives in history. The first line is its name, the second line is the max generations that the descendant of which lives.</p>
