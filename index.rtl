@@ -5,208 +5,32 @@
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<meta name="renderer" content="webkit" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
 		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../main.js"></script>
+
+		<link rel="stylesheet" href="../main.css" data-comment="structure" />
+		<link rel="stylesheet" href="../themes.css" data-comment="themes" />
+
 		<script type="text/javascript">
 			let data = @{DATA};
 
-			function reform() {
-				let getParentIndex = name => name.length == 1 ? null : name[0].charCodeAt() - 65;
-
-				for (let i=0; i<data.length - 1; i++) {
-					let parents = data[i];
-					let subs = data[i + 1];
-					for (let j=0; j<parents.length; j++) {
-						let p = parents[j];
-						let q = subs[j];
-
-						let qParentIdx = getParentIndex(q.name);
-						let qParent = parents[qParentIdx];
-
-						if (typeof qParent.children === 'undefined')
-							qParent.children = [];
-						qParent.children.push(q);
-						q.parent = qParent;
-
-						if (typeof p.children === 'undefined')
-							p.children = [];
-					}
-				}
-
-				let first = data[0];
-				let last = data[data.length - 1];
-				for (let i=0; i<data[0].length; i++) {
-					first[i].parent = null;
-					last[i].children = [];
-				}
-			}
-
-			function refresh() {
-				let makeGeneration = generation => {
-					let div = $('<div class="generation"></div>');
-					for (var individual of generation) {
-						let sDiv = makeIndividual(individual);
-						div.append(sDiv);
-					}
-					return div;
-				};
-
-				let makeIndividual = individual => {
-					let html = [];
-					html.push(`<div class="individual cls${individual.clz==null?'':individual.clz}">`);
-					html.push(`		<span class="name">${individual.name}</span>`);
-					html.push(`		<br />`);
-					html.push(`		${individual.lives}`);
-					html.push(`</div>`);
-
-					var div = $(html.join('\r\n'));
-					div.data('individual', individual);
-
-					div.on({
-						mousedown: evt => alter(evt.currentTarget, evt.button, evt.ctrlKey)
-					});
-
-					return div;
-				};
-
-				let container = $('.container');
-				container.empty();
-				for (let gen of data) {
-					let div = makeGeneration(gen);
-					container.append(div);
-				}
-			}
-
-			function alter(div, mouseButton, ctrl) {
-				let digUp = (individual, clz) => {
-					if (individual.parent == null)
-						return;
-
-					individual.parent.clz = clz;
-					digUp(individual.parent, clz);
-				};
-
-				let digDown = (individual, clz) => {
-					individual.clz = clz;
-					let subs = individual.children || [];
-					for (let s of subs)
-						digDown(s, clz);
-				};
-
-				var individual = $(div).data('individual');
-
-				let clz = individual.clz == null ? -1 : individual.clz;
-				switch (mouseButton) {
-					case 2: clz = null; break;
-					case 0: clz = (clz + 1) % 10; break;
-					default: break;
-				}
-
-				if (ctrl)
-					digUp(individual, clz);
-				digDown(individual, clz);
-				refresh();
-			}
-
 			function main() {
-				reform();
-				refresh();
+				reform(data);
+				refresh(data);
+
+				$('input#chkNoText').on('change', evt => {
+					var container = $('.container');
+					var checked = $(evt.currentTarget).prop('checked');
+					if (checked)
+						container.addClass('noText');
+					else
+						container.removeClass('noText');
+				});
 			}
 
 			$(document).ready(main);
 		</script>
-		<style type="text/css" data-comment="structure">
-			.clear {
-				clear: both !important;
-			}
-
-			.hidden {
-				display: none !important;
-			}
-
-			.generation {
-				margin-bottom: 3px;
-				text-align: center;
-			}
-
-			.individual {
-				display: inline-block;
-				width: 42px;
-				height: 34px;
-				margin-right: 3px;
-				text-align: center;
-				vertical-align: middle;
-				padding: 4px 0;
-				font-size: 12px;
-				border: 1px solid black;
-				background-color: white;
-				cursor: pointer;
-			}
-
-			.individual>.name {
-				font-weight: bold;
-			}
-		</style>
-		<style type="text/css" data-comment="themes">
-			.cls0 {
-				background-color: pink;
-				color: black;
-				border-color: orange;
-			}
-
-			.cls1 {
-				background-color: #c3c0ff;
-				color: black;
-				border-color: #777598;
-			}
-
-			.cls2 {
-				background-color: #f7c0ff;
-				color: black;
-				border-color: #54265a;
-			}
-
-			.cls3 {
-				background-color: #a5f4ff;
-				color: black;
-				border-color: #477980;
-			}
-
-			.cls4 {
-				background-color: #cdffa5;
-				color: black;
-				border-color: #487127;
-			}
-
-			.cls5 {
-				background-color: #ffd18f;
-				color: black;
-				border-color: #795d35;
-			}
-
-			.cls6 {
-				background-color: #47f9ff;
-				color: black;
-				border-color: #000000;
-			}
-
-			.cls7 {
-				background-color: #ff4747;
-				color: black;
-				border-color: #000000;
-			}
-
-			.cls8 {
-				background-color: #feff26;
-				color: black;
-				border-color: #6d6d59;
-			}
-
-			.cls9 {
-				background-color: #cecece;
-				color: black;
-				border-color: #040404;
-			}
-		</style>
 	</head>
 	<body oncontextmenu="self.event.returnValue=false">
 		<h1>Viewer of pedigree - @{PARAMS}</h1>
@@ -223,6 +47,8 @@
 		</ul>
 
 		<h2>Diagram</h2>
+		<input type="checkbox" id="chkNoText" />
+		<label for="chkNoText">隐藏文字</label>
 		<div class="container"></div>
 	</body>
 </html>
